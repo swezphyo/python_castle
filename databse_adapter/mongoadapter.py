@@ -83,14 +83,7 @@ def _close_db(db):
             pass
     return
 
-def main():
-    config = _load_config(CONFIG_FILE)
-    if config is None:
-        sys.exit(0)
-
-    # fileConfig('logging_config.ini')
-    # logger = logging.getLogger()
-    # logging.info("------LOGGING Started!! ----------")
+def insert_documents(config):
     with _connect_mongodb(config) as mongodb_client:
         if not mongodb_client:
             return
@@ -102,23 +95,23 @@ def main():
           { "name": "Amy", "address": "Apple st 652"},
           { "name": "Hannah", "address": "Mountain 21"},
           { "name": "Michael", "address": "Valley 345"},
-          { "name": "Sandy", "address": "Ocean blvd 2"},
-          { "name": "Betty", "address": "Green Grass 1"},
-          { "name": "Richard", "address": "Sky st 331"},
-          { "name": "Susan", "address": "One way 98"},
-          { "name": "Vicky", "address": "Yellow Garden 2"},
-          { "name": "Ben", "address": "Park Lane 38"},
-          { "name": "William", "address": "Central st 954"},
-          { "name": "Chuck", "address": "Main Road 989"},
-          { "name": "Viola", "address": "Sideway 1633"}
+          { "name": "Sandy", "address": "Ocean blvd 2"}
         ]
 
         x = mycol.insert_many(mylist)
-
         #print list of the _id values of the inserted documents:
         print(x.inserted_ids) 
 
+def main():
+    config = _load_config(CONFIG_FILE)
+    if config is None:
+        sys.exit(0)
 
+    insert_documents(config)
+    # fileConfig('logging_config.ini')
+    # logger = logging.getLogger()
+    # logging.info("------LOGGING Started!! ----------")
+    
 if __name__ == '__main__':
     main()
     sys.exit(0)
