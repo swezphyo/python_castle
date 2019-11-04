@@ -15,7 +15,7 @@ def _pair_nrc(raw_nrc):
     if not = exit
     """ 
     fetch_nrc_list = list()
-    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=dev-shan.database.windows.net;DATABASE=Dev-MMCIX;UID=secondary;PWD=By$!S5FfrgmU8=TB')
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=xxxxx;DATABASE=xxxxx;UID=xxxx;PWD=xxxxxx')
     cursor = conn.cursor()
     cursor.execute(" SELECT [PersonGUID] FROM [Person].[Person] where Full_NRC = '{0}';".format(raw_nrc))
     result_person = cursor.fetchall()    
@@ -45,10 +45,10 @@ def _connect_cosmos():
     """
     #to test this "ded56dbb-0ad5-4555-54c0-cad94521bc16" and "56e0f9ac-0354-077b-e613-a23f5fb485e4" when connect with sql as it's nrc is in english
     config = {
-        'ENDPOINT': 'https://thitsabotdb.documents.azure.com:443/',
-        'MASTERKEY': 'SWAW6vbYMJOYlOgerl6Hm31iOjEK9jpe3Cs0a3o0k6SDGvGvsF4ALYQxYRr8MwEinurkejYt34kVmMsadvjZyg==',
-        'DOCUMENTDB_DATABASE': 'pitepiteDB',
-        'DOCUMENTDB_COLLECTION': 'pitepiteCollection'
+        'ENDPOINT': 'xxxxxxxxx',
+        'MASTERKEY': 'xxxxxxxxxxxxxx',
+        'DOCUMENTDB_DATABASE': 'xxxxxx',
+        'DOCUMENTDB_COLLECTION': 'xxxxx'
     };
 
     # Initialize the Python DocumentDB client
