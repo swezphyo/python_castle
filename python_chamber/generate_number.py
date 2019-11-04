@@ -79,8 +79,6 @@ def main():
     #username,password = _get_credential()
     #conn = pyodbc.connect("DRIVER={0};SERVER={1};DATABASE={2};UID={3};PWD={4}".format(driver,host,db,username,pwd))
     conn = pyodbc.connect('DRIVER={SQL Server};SERVER=xxxxx;DATABASE=xxxx;UID=xxxx;PWD=xxxxxx')
-    conn = pyodbc.connect('DRIVER={SQL Server};SERVER=dev-shan.database.windows.net;DATABASE=Dev-MMCIX;UID=secondary;PWD=By$!S5FfrgmU8=TB')
-
 
     cursor = conn.cursor()
     # cursor.execute("select MAX(value) from person.RandomNumbers;")
