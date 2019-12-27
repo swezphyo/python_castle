@@ -39,7 +39,7 @@ def check_ssl(url_list):
 
 def main():
 	#_url = 'http://punhlaingestate.com'
-	url_list = ['http://punhlaingestate.com','https://www.yomaland.com','https://www.digitbin.com/make-not-secure-site-secure-chrome-fix']
+	url_list = ['http://punhlaingestate.com','https://www.yomaland.com','https://starcityyangon.com']
 	check_ssl(url_list)
 	
 
