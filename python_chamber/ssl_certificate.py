@@ -44,7 +44,7 @@ def check_ssl_expiry():
     hostname = ['yomaland.com','starcityyangon.com','balloonsoverbaganbookings.com','scratchpads.eu/explore/sites-list']
 
     for host in hostname: 
-        print(host) #print domain name for debugging 
+        #print(host) #print domain name for debugging 
 
         ctx = ssl.create_default_context()
         s = ctx.wrap_socket(socket.socket(), server_hostname=host)
@@ -54,14 +54,15 @@ def check_ssl_expiry():
             cert = s.getpeercert()
             #print(cert)
 
-            #date_range to get ssl expired date - notAfter
-            date_range = cert.get('notAfter')
+            #expired_cert to get ssl expired date - notAfter
+            expired_cert = cert.get('notAfter')
 
-            #ssl.cert_time_to_seconds for get cert_time in epoch
-            timestamp = ssl.cert_time_to_seconds(date_range)
+            #ssl.cert_time_to_seconds for get cert_time(GMT) in epoch
+            timestamp = ssl.cert_time_to_seconds(expired_cert)
             #convert epoch time to utc format to validate
             time_utc = datetime.utcfromtimestamp(timestamp)
-            print(time_utc)
+            #print(time_utc)
+            
             datetime_now = datetime.now()
             expire = time_utc - datetime_now #expire is timedelta object
 
@@ -69,18 +70,16 @@ def check_ssl_expiry():
             expire_days = expire.days
 
             if expire_days <= 30:
-                print ('Expired within {0} days'.format(expire_days))
-                expired_list.append(host)
+                expired_list.append({host:expire_days})
             else:
-                print('Need long time to expire')
-                far_expired.append(host)
+                far_expired.append({host:expire_days})
         except socket.gaierror:
-            print('No ssl for this domain')
             no_ssl_domain.append(host)
 
-    print(expired_list)
-    print(far_expired)
-    print(no_ssl_domain)
+    print("The domain that expired within 30 days are: {0}".format(expired_list))
+    print("The domain that are long way to expire are: {0}".format(far_expired))
+    print("The domain that are ssl-disabled are: {0}".format(no_ssl_domain))
+
 def main():
     check_ssl_expiry()
 
