@@ -75,7 +75,6 @@ def check_ssl_expiry():
                 far_expired.append({host:expire_days})
         except:
             no_ssl_domain.append(host)
-
     return expired_list, far_expired, no_ssl_domain
 
 def main():
