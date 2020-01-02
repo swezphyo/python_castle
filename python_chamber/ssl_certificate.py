@@ -1,13 +1,22 @@
 import ssl, socket
-from datetime import datetime
 import sys
+import smtplib
 
-def send_mail():
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.utils import COMMASPACE
+from email import encoders
+
+from datetime import datetime
+
+def send_mail(expired,far_expired,no_ssl):
     """send mail about ssl expired dates and no-ssl website
     """
-        #sender's mail credentials    
-    sender = 'swezinphyo@yoma.com.mm'
-    receiver = ['swezinphyo@yoma.com.mm']
+    #sender's mail credentials    
+    sender = 'xxxx@hello.com.mm'
+    passw = 'xxxxxx'
+    receiver = ['xxxx@hello.com.mm']
     smtpsrv = "smtp.office365.com"
 
     SUBJECT = 'SSL checker notification'
@@ -15,11 +24,16 @@ def send_mail():
     msg['From'] = sender
     msg['To'] = COMMASPACE.join(receiver)
     msg['Subject'] = SUBJECT
-    body ="""    Status
-    """ 
+    body =""" 
+    The domain that expired within 30 days are: {0}
+    The domain that still not expired: {1}
+    The domain that doesn't have ssl: {2}
+
+    """.format(expired,far_expired,no_ssl)
     body = MIMEText(body)
     msg.attach(body)
 
+    #smtpserver connection
     smtpserver = smtplib.SMTP(smtpsrv,587)
     smtpserver.ehlo()
     smtpserver.starttls()
@@ -35,14 +49,12 @@ def check_ssl_expiry():
     - if ssl enabled: check certificate and expired date comes within 30 days or not
     - if no ssl enabled : list them 
     """
-
     expired_list = list()
     far_expired = list()
     no_ssl_domain = list()
 
     #dummy_hostname
     hostname = ['yomaland.com','starcityyangon.com','balloonsoverbaganbookings.com','scratchpads.eu/explore/sites-list','weevil.info']
-
     for host in hostname: 
         #print(host) #print domain name for debugging 
 
@@ -82,8 +94,10 @@ def main():
     print("The domain that expired within 30 days are: {0}".format(expired))
     print("The domain that are long way to expire are: {0}".format(far_expired))
     print("The domain that are ssl-disabled are: {0}".format(no_ssl))
+    #function send_mail to send the ssl information
+    send_mail(expired,far_expired,no_ssl)
 
 
 if __name__ == '__main__':
     main()
-    #sys.exit(0) 
+    sys.exit(0) 
