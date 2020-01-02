@@ -76,12 +76,13 @@ def check_ssl_expiry():
         except socket.gaierror:
             no_ssl_domain.append(host)
 
-    print("The domain that expired within 30 days are: {0}".format(expired_list))
-    print("The domain that are long way to expire are: {0}".format(far_expired))
-    print("The domain that are ssl-disabled are: {0}".format(no_ssl_domain))
+    return expired_list, far_expired, no_ssl_domain
 
 def main():
-    check_ssl_expiry()
+    expired,far_expired,no_ssl = check_ssl_expiry()
+    print("The domain that expired within 30 days are: {0}".format(expired))
+    print("The domain that are long way to expire are: {0}".format(far_expired))
+    print("The domain that are ssl-disabled are: {0}".format(no_ssl))
 
 
 if __name__ == '__main__':
