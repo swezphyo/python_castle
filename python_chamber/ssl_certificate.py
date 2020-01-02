@@ -41,7 +41,7 @@ def check_ssl_expiry():
     no_ssl_domain = list()
 
     #dummy_hostname
-    hostname = ['yomaland.com','starcityyangon.com','balloonsoverbaganbookings.com','scratchpads.eu/explore/sites-list']
+    hostname = ['yomaland.com','starcityyangon.com','balloonsoverbaganbookings.com','scratchpads.eu/explore/sites-list','weevil.info']
 
     for host in hostname: 
         #print(host) #print domain name for debugging 
@@ -73,7 +73,7 @@ def check_ssl_expiry():
                 expired_list.append({host:expire_days})
             else:
                 far_expired.append({host:expire_days})
-        except socket.gaierror:
+        except:
             no_ssl_domain.append(host)
 
     return expired_list, far_expired, no_ssl_domain
