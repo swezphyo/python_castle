@@ -1,5 +1,6 @@
 import ssl, socket
 import sys
+import base64
 import smtplib
 
 from email.mime.multipart import MIMEMultipart
@@ -9,14 +10,15 @@ from email.utils import COMMASPACE
 from email import encoders
 
 from datetime import datetime
-
+    
 def send_mail(expired,far_expired,no_ssl):
     """send mail about ssl expired dates and no-ssl website
     """
     #sender's mail credentials    
-    sender = 'xxxx@hello.com.mm'
-    passw = 'xxxxxx'
-    receiver = ['xxxx@hello.com.mm']
+    sender = 'swezinphyo@yoma.com.mm'
+    #decode the encoded password for security
+    passw = str(base64.b64decode('NDk5IWlzbXlsb3ZF'),"utf-8")
+    receiver = ['swezinphyo@yoma.com.mm']
     smtpsrv = "smtp.office365.com"
 
     SUBJECT = 'SSL checker notification'
