@@ -27,7 +27,7 @@ def check_ssl(url_list):
 	"""
 	non_ssl = list()
 	ssl = list()
-	for _url in url_list:
+	for _url in url_list:https://duckduckgo.com/?q=get+ssl+certificate+in+python+script&t=canonical&atb=v198-5&ia=web
 		conn = urllib.request.urlopen(_url)
 		if(conn.getcode() == 200):
 			#call validate function to check ssl's expired date
@@ -46,3 +46,5 @@ def main():
 if __name__ == '__main__':
 	main()
 	sys.exit(0)
+
+	https://www.punhlaingsiloamhospitals.com/, www.punhlaingsiloamhospitals.com/ 

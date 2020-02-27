@@ -2,9 +2,9 @@ import ssl, socket
 import sys
 import base64
 import smtplib
-import boto3
+#import boto3
 import json
-from botocore.exceptions import ClientError
+#from botocore.exceptions import ClientError
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -14,6 +14,13 @@ from email import encoders
 
 from datetime import datetime
 
+def print_ul(elements):
+    print("<ul>")
+    for s in elements:
+        ul = "<li>" + str(s) + "</li>"
+        print(ul)
+    print("</ul>")
+
 def send_mail_ses(expired,far_expired,no_ssl):
     # Replace sender@example.com with your "From" address.
     # This address must be verified with Amazon SES.
@@ -21,7 +28,7 @@ def send_mail_ses(expired,far_expired,no_ssl):
 
     # Replace recipient@example.com with a "To" address. If your account 
     # is still in the sandbox, this address must be verified.
-    RECIPIENT = "swezinphyo@yoma.com.mm"
+    RECIPIENT = ["swezinphyo@yoma.com.mm","vinusrainbow@gmail.com"]
 
     # Specify a configuration set. If you do not want to use a configuration
     # set, comment the following variable, and the 
@@ -41,17 +48,37 @@ def send_mail_ses(expired,far_expired,no_ssl):
                 )
                 
     # The HTML body of the email.
-    expire_test = "The domain that expired within 30 days are:".format(expired)
+    if len(expired) == 0:
+        expire_test = "There is no Domain that expired within 30 days."
+    else:
+        expire_test = "The domain that expired within 30 days are:".format(expired)
+    
     nonexpire_test = "The domain that still didn't expired are:".format(far_expired)
-    nossl_test = "The domain that doesn't have ssl are: ".format(no_ssl)
+
+    if len(no_ssl) == 0:
+        nossl_test = "There is no Domain which has no ssl."
+    else:
+        nossl_test = "The domain that doesn't have ssl are: ".format(print_ul(no_ssl))
 
     BODY_HTML = """<html>
     <head></head>
     <body>
-      <h1>Check Domain's SSL</h1>
-      <p>{0}</p>
-      <p>{1}</p>
-      <p>{2}</p>
+      <h1>Domain's SSL expiry Status </h1>
+      <div style="Margin-left: 20px;Margin-right: 20px;">
+        <div style="mso-line-height-rule: exactly;mso-text-raise: 4px;">
+        <p style="Margin-top: 12px;Margin-bottom: 0;">{0}</p><p style="Margin-top: 20px;Margin-bottom: 20px;">&nbsp;</p>
+      </div>
+    </div>
+    <div style="Margin-left: 20px;Margin-right: 20px;">
+        <div style="mso-line-height-rule: exactly;mso-text-raise: 4px;">
+        <p style="Margin-top: 12px;Margin-bottom: 0;">{1}</p><p style="Margin-top: 20px;Margin-bottom: 20px;">&nbsp;</p>
+      </div>
+    </div>
+    <div style="Margin-left: 20px;Margin-right: 20px;">
+        <div style="mso-line-height-rule: exactly;mso-text-raise: 4px;">
+        <p style="Margin-top: 12px;Margin-bottom: 0;">{2}</p><p style="Margin-top: 20px;Margin-bottom: 20px;">&nbsp;</p>
+      </div>
+    </div>
     </body>
     </html>
                 """.format(expire_test,nonexpire_test,nossl_test)           
@@ -67,9 +94,8 @@ def send_mail_ses(expired,far_expired,no_ssl):
         #Provide the contents of the email.
         response = client.send_email(
             Destination={
-                'ToAddresses': [
+                'ToAddresses': 
                     RECIPIENT,
-                ],
             },
             Message={
                 'Body': {
@@ -144,9 +170,12 @@ def check_ssl_expiry():
     no_ssl_domain = list()
 
     #dummy_hostname
-    hostname = ['yomaland.com','starcityyangon.com','balloonsoverbaganbookings.com','scratchpads.eu/explore/sites-list','weevil.info']
+    hostname = ['yomagolf.club','aweimetta.com','aweipila.com','balloonsoverbagan.com','balloonsoverbaganbookings.com','burmaboating.com','ducati.com.mm','fmiair.com','hotelsuggati.com','kayahresort.com',
+    'keinnara.com','kospacoldchain.com','kospalogistics.com','memories-travel.com','memories-travel.com.cn','memoriesgroup.com','mitsubishimotorsmyanmar.com','newhollandmyanmar.com',
+    'punhlaingestate.com','punhlainggolfclub.com','punhlainghospitals.com','punhlaingsiloamhospitals.com','spadps.com','starcityyangon.com','yoma.com.mm','yomaautomart.com','yomacarshare.com',
+    'yomacentral.com','yomaepr.com','yomagroup.net','yomaland.com','yomamicropower.com','yomarentals.asia']
     for host in hostname: 
-        #print(host) #print domain name for debugging 
+        print(host) #print domain name for debugging 
 
         ctx = ssl.create_default_context()
         s = ctx.wrap_socket(socket.socket(), server_hostname=host)
@@ -154,7 +183,8 @@ def check_ssl_expiry():
             #use 443 to validate only https 
             s.connect((host, 443))
             cert = s.getpeercert()
-            #print(cert)
+            print(cert['notBefore'])
+            print(cert['notAfter'])
 
             #expired_cert to get ssl expired date - notAfter
             expired_cert = cert.get('notAfter')
@@ -199,7 +229,7 @@ def main():
     print("The domain that are long way to expire are: {0}".format(far_expired))
     print("The domain that are ssl-disabled are: {0}".format(no_ssl))
     #function send_mail to send the ssl information
-    send_mail_ses(expired,far_expired,no_ssl)
+    #send_mail_ses(expired,far_expired,no_ssl)
 
 
 if __name__ == '__main__':
